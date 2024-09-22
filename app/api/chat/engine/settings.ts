@@ -17,7 +17,7 @@ import { HuggingFaceEmbedding } from "llamaindex/embeddings/HuggingFaceEmbedding
 import { OllamaEmbedding } from "llamaindex/embeddings/OllamaEmbedding";
 import { ALL_AVAILABLE_ANTHROPIC_MODELS } from "llamaindex/llm/anthropic";
 import { Ollama } from "llamaindex/llm/ollama";
-
+import { DummyEmbedding } from "./DummyEmbedding";
 const CHUNK_SIZE = 512;
 const CHUNK_OVERLAP = 20;
 
@@ -63,12 +63,9 @@ function initOpenAI() {
       ? Number(process.env.LLM_MAX_TOKENS)
       : undefined,
   });
-  Settings.embedModel = new OpenAIEmbedding({
-    model: process.env.EMBEDDING_MODEL,
-    dimensions: process.env.EMBEDDING_DIM
-      ? parseInt(process.env.EMBEDDING_DIM)
-      : undefined,
-  });
+  Settings.embedModel = new DummyEmbedding(
+    process.env.EMBEDDING_DIM ? parseInt(process.env.EMBEDDING_DIM) : undefined,
+  );
 }
 
 function initAzureOpenAI() {
